@@ -219,28 +219,27 @@ def get_aspect_buckets(resolution, square_only=False, reduced_buckets=False):
         raise e
     
 def get_supported_resolutions():
-    all_image_sizes = __get_all_aspects()
-    return list(map(lambda sizes: sizes[0][0], all_image_sizes))
+    all_image_sizes_dict = {
+        256: ASPECTS_256,
+        320: ASPECTS_320,
+        384: ASPECTS_384,
+        448: ASPECTS_448,
+        512: ASPECTS_512,
+        576: ASPECTS_576,
+        640: ASPECTS_640,
+        704: ASPECTS_704,
+        768: ASPECTS_768,
+        832: ASPECTS_832,
+        896: ASPECTS_896,
+        960: ASPECTS_960,
+        1024: ASPECTS_1024,
+        1088: ASPECTS_1088,
+        1152: ASPECTS_1152,
+        1280: ASPECTS_1280,
+        1536: ASPECTS_1536,
+    }
 
-def __get_all_aspects():
-    return [ASPECTS_256,
-            ASPECTS_320,
-            ASPECTS_384,
-            ASPECTS_448,
-            ASPECTS_512,
-            ASPECTS_576,
-            ASPECTS_640,
-            ASPECTS_704,
-            ASPECTS_768,
-            ASPECTS_832,
-            ASPECTS_896,
-            ASPECTS_960,
-            ASPECTS_1024,
-            ASPECTS_1088,
-            ASPECTS_1152,
-            ASPECTS_1280,
-            ASPECTS_1536,
-           ]
+    return list(all_image_sizes_dict.keys())
 
 
 def get_rational_aspect_ratio(bucket_wh: Tuple[int, int]) -> Tuple[int]:
