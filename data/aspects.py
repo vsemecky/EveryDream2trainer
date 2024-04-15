@@ -203,13 +203,14 @@ ASPECTS_256 = [[256,256],  # 65536 1:1
 
 def get_aspect_buckets(resolution, square_only=False, reduced_buckets=False):
     if resolution < 256:
-        raise ValueError("Resolution must be at least 512")
+        raise ValueError("Resolution must be at least 256")
     try: 
         rounded_resolution = int(resolution / 64) * 64
         if square_only:
             return [[rounded_resolution, rounded_resolution]]
-        all_image_sizes = __get_all_aspects()
-        aspects = next(filter(lambda sizes: sizes[0][0]==rounded_resolution, all_image_sizes), None)
+        # all_image_sizes = __get_all_aspects()
+        # aspects = next(filter(lambda sizes: sizes[0][0]==rounded_resolution, all_image_sizes), None)
+        aspects = __get_all_aspects()[rounded_resolution]
         if reduced_buckets:
             return aspects[0:2]
         return aspects
@@ -219,7 +220,10 @@ def get_aspect_buckets(resolution, square_only=False, reduced_buckets=False):
         raise e
     
 def get_supported_resolutions():
-    all_image_sizes_dict = {
+    return list(__get_all_aspects().keys())
+
+def __get_all_aspects():
+    return {
         256: ASPECTS_256,
         320: ASPECTS_320,
         384: ASPECTS_384,
@@ -238,9 +242,6 @@ def get_supported_resolutions():
         1280: ASPECTS_1280,
         1536: ASPECTS_1536,
     }
-
-    return list(all_image_sizes_dict.keys())
-
 
 def get_rational_aspect_ratio(bucket_wh: Tuple[int, int]) -> Tuple[int]:
     def farey_aspect_ratio_pair(x: float, max_denominator_value: int):
@@ -276,3 +277,13 @@ def get_rational_aspect_ratio(bucket_wh: Tuple[int, int]) -> Tuple[int]:
             return a, b
 
     return farey_aspect_ratio_pair(bucket_wh[0]/bucket_wh[1], 32)
+
+print("__get_all_aspects")
+print(__get_all_aspects())
+print()
+print("get_supported_resolutions")
+print(get_supported_resolutions())
+print()
+print("get_aspect_buckets")
+print(get_aspect_buckets(512))
+print()
